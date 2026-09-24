@@ -88,7 +88,7 @@ export default function LibraryPage() {
                     <div className="surface w-full max-w-xl p-10 text-center md:p-12">
                         <h1 className="font-display text-4xl text-slate-900">Connect to open your library</h1>
                         <p className="mt-5 text-lg leading-8 text-slate-600">
-                            Stackpad uses your wallet address to manage reading credits and unlock protected pages.
+                            Bot Ground uses your wallet address to manage reading credits and unlock protected pages.
                         </p>
                         <div className="mt-10 flex justify-center">
                             <button onClick={connectWallet} className="btn-primary">Connect wallet</button>

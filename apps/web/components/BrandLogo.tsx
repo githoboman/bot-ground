@@ -16,7 +16,7 @@ export function BrandLogo({
     return (
         <Link href={href} className={`inline-flex items-center gap-2.5 ${className}`.trim()}>
             <BrandMark />
-            <span className={labelClassName}>Stackpad</span>
+            <span className={labelClassName}>Bot Ground</span>
         </Link>
     );
 }
