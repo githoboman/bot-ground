@@ -1,0 +1,65 @@
+import express from 'express';
+import cors from 'cors';
+import * as dotenv from 'dotenv';
+import booksRouter from './routes/books';
+import contentRouter from './routes/content';
+import authorRouter from './routes/author';
+import creditsRouter from './routes/credits';
+import { startCreditWorkers } from './services/credit-workers';
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+// Middleware
+app.use(cors({
+    exposedHeaders: [
+        'payment-required',
+        'payment-response',
+        'x-payment',
+        'x-payment-response',
+        'X-Payment-Required',
+        'WWW-Authenticate',
+    ],
+}));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+// Logging middleware
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+    next();
+});
+
+// Health check
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// API Routes
+app.use('/api/books', booksRouter);
+app.use('/api/content', contentRouter);
+app.use('/api/author', authorRouter);
+app.use('/api/credits', creditsRouter);
+
+// 404 handler
+app.use((req, res) => {
+    res.status(404).json({ error: 'Not found' });
+});
+
+// Error handler
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    console.error('Error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+});
+
+// Start server
+app.listen(PORT, () => {
+    console.log(`🚀 Backend server running on http://localhost:${PORT}`);
+    console.log('📚 Stackpad API ready');
+    console.log(`🌐 Network: ${process.env.STACKS_NETWORK || 'testnet'}`);
+    startCreditWorkers();
+});
+
+export default app;

@@ -1,0 +1,23 @@
+{
+  "name": "bot-ground",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n backend,web \"npm run backend\" \"npm run web\"",
+    "dev:workspaces": "npm run dev --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "web": "npm run dev -w apps/web",
+    "backend": "npm run dev -w apps/backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "esbuild": "^0.27.3",
+    "typescript": "^5.3.3"
+  }
+}
